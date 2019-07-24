@@ -1,8 +1,8 @@
 import wikipedia as w
-from wikipedia.exceptions import DisambiguationError
+from wikipedia.exceptions import DisambiguationError, PageError
 
 def lookup(term):
-    l = w.search(term)
+    l = w.search(term, results=10)
     retstring = "Here's what I found for *" + term + "*:\n\n"
     for line in l:
         retstring += "**" + line + "**\n"
@@ -10,7 +10,7 @@ def lookup(term):
 
 def summ(term):
     try:
-        s = w.summary(term)
+        s = w.summary(term, chars=1700)
         lnk = w.page(term).url
     except DisambiguationError as e:
         print(e)
@@ -27,7 +27,7 @@ def summ(term):
 
 def img(term):
     try:
-        img = w.page(term).img[0]
+        img = w.page(term).images[0]
     except PageError as e:
         print(e)
         return("I couldn't find any images for **%s**"%(term))

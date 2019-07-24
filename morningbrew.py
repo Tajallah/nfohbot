@@ -12,7 +12,11 @@ urls = [
         "https://www.morningbrew.com/latest/retail/"
         ]
 
-final = []
+channels = [
+        "415146126501740544",#Headlines
+        "571144217498353664", #tech
+        "415139683346153472" #biz
+        ]
 
 def prune(text):
     result = text
@@ -36,8 +40,9 @@ def get_stuff(soup, blacklist, hardlist, stocks):
     i = 0
     holding = ""
     paragraphs = []
-    start_flag = False
+    start_flag = True
     for paragraph in soup.find_all('p'):
+        #print(paragraphs)
         #print(paragraph.get_text())
         p = paragraph.get_text().strip('\n').strip('\xa0').replace(u'\xa0', u'').replace(u'\n', u'').replace('  ', '')
         #print(p)
@@ -69,20 +74,22 @@ def get_stuff(soup, blacklist, hardlist, stocks):
                 h = prune(h)
                 if h != None:
                     links.append(h)
-
     print(paragraphs)
     print(links)
+    return [paragraphs, links]
 
-for url in urls[0:1]:
-    req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    html = urlopen(req, context=ctx).read()
-    soup = beausu(html, features="html.parser")
+def doall()
+    final = []
+    for i in range(3):
+        req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        html = urlopen(req, context=ctx).read()
+        soup = beausu(html, features="html.parser")
     
-    blacklist = ['morningbrew', 'Morning Brew', 'sponsor', 'Sponsor', 'xa0']
-    hardlist = ['Latest', 'SPONSORED BY']
+        blacklist = ['morningbrew', 'Morning Brew', 'sponsor', 'Sponsor', 'xa0', 'MorningBrew', 'the Brew']
+        hardlist = ['Latest', 'SPONSORED BY', 'twitter.']
     
-    stocks = ['S&P', 'NASDAQ', 'DJIA', '10-YR', 'GOLD', 'OIL']
+        stocks = ['S&P', 'NASDAQ', 'DJIA', '10-YR', 'GOLD', 'OIL']
     
-    final.append(get_stuff(soup, blacklist, hardlist, url))
+        final.append([get_stuff(soup, blacklist, hardlist, urls[i]), channels[i]])
+    return final
 
-#return final
