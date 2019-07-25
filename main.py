@@ -15,7 +15,7 @@ client = discord.Client()
 @client.event
 async def on_ready():
     print("SESSION STARTED -- Logged in as ", client.user)
-    news = morningbrew.doall()
+    #news = morningbrew.doall()
     '''for obj in news:
         for line in text:
             await client.send_message( ,obj[1])'''
