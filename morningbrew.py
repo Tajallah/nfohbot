@@ -1,3 +1,5 @@
+#TODO: Modular url grabbing so this can be paired with a cron that puts things into argv
+
 import discord
 
 from urllib.request import Request, urlopen
@@ -20,9 +22,9 @@ urls = [
         ]
 
 channels = [
-        "415146126501740544",#Headlines
-        "571144217498353664", #tech
-        "415139683346153472" #biz
+        "YOUR CHANNEL HERE",#Headlines
+        "YOUR CHANNEL HERE", #tech
+        "YOUR CHANNEL HERE" #biz
         ]
 
 def prune(text, blacklist, hardlist):
@@ -57,7 +59,13 @@ def get_stuff(soup, blacklist, hardlist, stocks):
         if p != None:
             if p not in stocks and i == 0:
                 if start_flag == True:
-                    paragraphs.append(p)
+                    if len(p) >= 2000:
+                        q = p[:1900]
+                        p = p[1901:]
+                        paragraphs.append(p)
+                        paragraphs.append(q)
+                    else:
+                        paragraphs.append(p)
             else:
                 start_flag = True
                 holding = holding + " " +  p
